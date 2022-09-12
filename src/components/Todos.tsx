@@ -1,13 +1,19 @@
-import React from "react";
-import Todo from "../models/todo";
+import React, { useContext } from "react";
 import TodoItem from "./TodoItem";
+import { TodosContext } from "../store/todos.context";
 import classes from "./Todos.module.css";
 
-const Todos: React.FC<{ items: Todo[] }> = (props) => {
+const Todos: React.FC = () => {
+  const todosCtx = useContext(TodosContext);
+
   return (
     <ul className={classes.todos}>
-      {props.items.map((item) => (
-        <TodoItem key={item.id} text={item.text} />
+      {todosCtx.items.map((item) => (
+        <TodoItem
+          key={item.id}
+          text={item.text}
+          onRemoveTodo={todosCtx.removeTodo.bind(null, item.id)} // Todos.tsx에서 bind()로 인수처리 해줌으로써 TodoItem에서 또 인수처리를 해줄 필요가 없게 되었음
+        />
       ))}
     </ul>
   );
